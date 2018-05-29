@@ -1,8 +1,19 @@
 #!/bin/sh
 
+
+if [ ! -d mods ]; then
+    echo "Prepare modules dir first with 'mvn clean package && sh run-modules.sh'"
+    exit 1
+fi
+
+if [ -d dist ]; then
+    rm -rf dist
+fi
+
 jlink --module-path \
-    $JAVA_HOME/jmod:\
-com.greetings/target/com.greetings-1.0-SNAPSHOT.jar:\
-org.astro/target/org.astro-1.0-SNAPSHOT.jar \
+    $JAVA_HOME/jmod:mods/\
  --launcher run=com.greetings/com.greetings.Main \
  --add-modules com.greetings --output dist/
+
+dist/bin/run
+
